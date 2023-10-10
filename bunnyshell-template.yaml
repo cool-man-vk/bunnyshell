@@ -1,12 +1,11 @@
 kind: Environment
-name: farmfield
+name: farmtrack
 type: primary
-urlHandle: farmfield
 components:
     -
         kind: Application
         name: crop-recommender-api
-        gitRepo: 'https://github.com/cool-man-vk/bunnyshell-hacks.git'
+        gitRepo: 'https://github.com/cool-man-vk/bunnyshell.git'
         gitBranch: main
         gitApplicationPath: crop-recommender-api
         dockerCompose:
@@ -46,7 +45,7 @@ components:
     -
         kind: Application
         name: fertilizer-prediction-api
-        gitRepo: 'https://github.com/cool-man-vk/bunnyshell-hacks.git'
+        gitRepo: 'https://github.com/cool-man-vk/bunnyshell.git'
         gitBranch: main
         gitApplicationPath: fertilizer-recommendation
         dockerCompose:
@@ -80,7 +79,7 @@ components:
                 - '5432:5432'
         volumes:
             -
-                name: postgres-data8kycua0if3jpv
+                name: postgres-data9ucnmvxdo6q8v
                 mount: /var/lib/postgresql/data
                 subPath: ''
 volumes:
@@ -89,10 +88,6 @@ volumes:
         size: 1Gi
         type: disk
     -
-        name: postgres-data86rtq3olzes1v
-        size: 1Gi
-        type: disk
-    -
-        name: postgres-data8kycua0if3jpv
+        name: postgres-data9ucnmvxdo6q8v
         size: 1Gi
         type: disk
