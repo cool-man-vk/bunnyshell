@@ -1,0 +1,98 @@
+kind: Environment
+name: farmfield
+type: primary
+urlHandle: farmfield
+components:
+    -
+        kind: Application
+        name: crop-recommender-api
+        gitRepo: 'https://github.com/cool-man-vk/bunnyshell-hacks.git'
+        gitBranch: main
+        gitApplicationPath: crop-recommender-api
+        dockerCompose:
+            build:
+                context: ./crop-recommender-api
+                dockerfile: Dockerfile
+            environment:
+                DATABASE_URL: 'postgresql://postgres:postgres@database:5432/postgres'
+                PG_DATABASE: postgres
+                PG_HOST: database
+                PG_PASSWORD: postgres
+                PG_PORT: '5432'
+                PG_USER: postgres
+            ports:
+                - '8000:8000'
+        hosts:
+            -
+                hostname: 'crop-recommender-api-{{ env.base_domain }}'
+                path: /
+                servicePort: 8000
+    -
+        kind: Database
+        name: crop-recommender-db
+        dockerCompose:
+            environment:
+                POSTGRES_DB: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_USER: postgres
+            image: 'postgres:13-alpine'
+            ports:
+                - '5432:5432'
+        volumes:
+            -
+                name: postgres-data
+                mount: /var/lib/postgresql/data
+                subPath: ''
+    -
+        kind: Application
+        name: fertilizer-prediction-api
+        gitRepo: 'https://github.com/cool-man-vk/bunnyshell-hacks.git'
+        gitBranch: main
+        gitApplicationPath: fertilizer-recommendation
+        dockerCompose:
+            build:
+                context: ./fertilizer-recommendation
+                dockerfile: Dockerfile
+            environment:
+                DATABASE_URL: 'postgresql://postgres:postgres@database:5432/postgres'
+                PG_DATABASE: postgres
+                PG_HOST: database
+                PG_PASSWORD: postgres
+                PG_PORT: '5432'
+                PG_USER: postgres
+            ports:
+                - '8000:8000'
+        hosts:
+            -
+                hostname: 'fertilizer-prediction-api-{{ env.base_domain }}'
+                path: /
+                servicePort: 8000
+    -
+        kind: Database
+        name: fertilizer-prediction-db
+        dockerCompose:
+            environment:
+                POSTGRES_DB: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_USER: postgres
+            image: 'postgres:13-alpine'
+            ports:
+                - '5432:5432'
+        volumes:
+            -
+                name: postgres-data8kycua0if3jpv
+                mount: /var/lib/postgresql/data
+                subPath: ''
+volumes:
+    -
+        name: postgres-data
+        size: 1Gi
+        type: disk
+    -
+        name: postgres-data86rtq3olzes1v
+        size: 1Gi
+        type: disk
+    -
+        name: postgres-data8kycua0if3jpv
+        size: 1Gi
+        type: disk
